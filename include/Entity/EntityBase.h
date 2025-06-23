@@ -1,0 +1,38 @@
+#ifndef _ENTITY_BASE_H_
+#define _ENTITY_BASE_H_
+
+#include <iostream>
+
+#include "IEntity.h"
+
+class EntityBase : public IEntity {
+public:
+    virtual ~EntityBase() = default;
+
+    EntityBase(EntitySubmission submission) : _submission(submission) {}
+    EntityBase(float radius) : _submission({ DEFAULT_POSITION, DEFAULT_ROTATION, radius}) {}
+
+    bool isAlive() const override{ return _is_alive; }
+    void destroy() override{ _is_alive = false; }
+    
+    void setSubmission(const EntitySubmission submission) override{ _submission = submission; }
+    void setPosition(const Vector2 position) override{ _submission.pos = position; }
+    void setRotation(const float rotation) override{ _submission.rot = rotation; }
+
+    EntitySubmission getSubmission() const override{ return _submission; }
+
+    bool isCollide(const IEntity& other) const override{ 
+        return CheckCollisionCircles(
+            this->_submission.pos, this->_submission.radius,
+            other.getSubmission().pos, other.getSubmission().radius);
+    }
+
+protected:
+    static constexpr Vector2 DEFAULT_POSITION = { 0, 0 };
+    static constexpr float DEFAULT_ROTATION = 0;
+
+    bool _is_alive = true;
+    EntitySubmission _submission;
+};
+
+#endif // !_ENTITY_BASE_H_

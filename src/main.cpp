@@ -1,8 +1,8 @@
-#include "App.h"
+#include "../include/GameApp.h"
 
 int main() {
-    App app;
-    app.Run();
+    GameApp game;
+    game.Run();
 
     return 0;
 }
