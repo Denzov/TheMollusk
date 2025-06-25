@@ -27,7 +27,6 @@ private:
 	GameCamera _camera;
 
 	EntityManager _entities;
-
 	std::shared_ptr<UserPlayer> _main_player;
 };
 

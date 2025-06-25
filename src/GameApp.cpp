@@ -32,6 +32,7 @@ void GameApp::compute()
         _main_player->destroy();
     }
     else if(IsKeyDown(KEY_R)){
+        _main_player->setPosition({ 0, 0 });
         CaptureParams::getInstance()->set(   
                                     GameAppParams::FIELD_WIDTH,
                                     GameAppParams::FIELD_WIDTH);

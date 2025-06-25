@@ -6,17 +6,16 @@
 
 #include "IEntity.h"
 
-class EntityManager {
+class EntityManager{
 public:
     void update(){
         for(size_t i = 0; i < _entities.size();){
-            if(!_entities[i]->isAlive()){
-                _entities[i].reset();
+            if(!_entities[i]->isAlive() || !_entities[i]->isInField()){
                 _entities.erase(_entities.begin() + i);
                 continue;
             }
 
-            _entities[i++]->update();
+            _entities[i++]->update(*this);
         }
     }
 
@@ -32,5 +31,7 @@ public:
 private:
     std::vector<std::shared_ptr<IEntity>> _entities;
 };
+
+using EntityManager_ptr = std::shared_ptr<EntityManager>;
 
 #endif // !_ENTITY_MANAGER_H_

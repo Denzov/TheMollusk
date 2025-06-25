@@ -16,15 +16,15 @@ void GameCamera::update() {
 }
 
 void GameCamera::impact_zoom_by_mouse_wheel(){
-    zoom += GetMouseWheelMove() * zoom * GameCameraParams::RATIO_ZOOM;
+    zoom += GetMouseWheelMove() * zoom * GameCameraParams::MOUSE_WHEEL_RATIO_ZOOM;
 }
 
 void GameCamera::impact_zoom_by_keys(){
     MOVING_KEY_HANDLE_BEGIN(ZOOM_ADD)
-        zoom += zoom * GameCameraParams::RATIO_ZOOM;
+        zoom += zoom * GameCameraParams::KEY_RATIO_ZOOM;
     
     MOVING_KEY_HANDLE_EXTENSION(ZOOM_REDUCE)
-        zoom -= zoom * GameCameraParams::RATIO_ZOOM;
+        zoom -= zoom * GameCameraParams::KEY_RATIO_ZOOM;
 
     MOVING_KEY_HANDLE_END
 }

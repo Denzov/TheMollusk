@@ -7,8 +7,8 @@
 
 struct GameCameraParams {
     static constexpr Vector2 DEFAULT_OFFSET      = { 
-        half(GameAppParams::FIELD_WIDTH),
-        half(GameAppParams::FIELD_HEIGHT)
+        half(GameAppParams::DEFAULT_SCREEN_WIDTH),
+        half(GameAppParams::DEFAULT_SCREEN_HEIGHT)
     }; 
 
     static constexpr Vector2 DEFAULT_TARGET      = { 0, 0 }; 
@@ -18,7 +18,9 @@ struct GameCameraParams {
     static constexpr float   MIN_ZOOM            = 0.005f;
     static constexpr float   MAX_ZOOM            = 100000.f;
 
-    static constexpr float   RATIO_ZOOM   = 0.1;
+    static constexpr float   MOUSE_WHEEL_RATIO_ZOOM = 0.25f;
+    static constexpr float   KEY_RATIO_ZOOM = 0.01f;
+
 	static constexpr float   RATIO_TARGET = 0.7;
 };
 

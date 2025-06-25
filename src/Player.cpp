@@ -9,14 +9,22 @@ void UserPlayer::addRotation(const float rot) noexcept{
 }
 
 void UserPlayer::draw() const {
-    if(_drawing_strategy)
-        _drawing_strategy->draw(::EntityBase::getSubmission());
+    _drawing_strategy->draw(_submission, BULLET_SPAWN_DELTA);
 }
 
-void UserPlayer::update() {
-    if(_control_strategy){
-        _input_strategy->handle();
-        _control_strategy->update(_submission, _input_strategy->get());
+void UserPlayer::update(EntityManager& manager) {
+    _input_strategy->handle();
+    _control_strategy->update(_submission, _input_strategy->get());
+
+    if(_input_strategy->get().is_fire){
+        const float left_bullet_rot = _submission.rot - half(half(PI));
+        const float right_bullet_rot = _submission.rot + half(half(PI));
+
+        const Vector2 left_bullet_pos  = vec_from_angle(_submission.rot, _submission.radius + BULLET_SPAWN_DELTA, _submission.pos);
+        const Vector2 right_bullet_pos = vec_from_angle(_submission.rot, _submission.radius + BULLET_SPAWN_DELTA, _submission.pos);
+
+        manager.addEntity(std::make_shared<DefaultPlayerBullet>(left_bullet_pos, left_bullet_rot));
+        manager.addEntity(std::make_shared<DefaultPlayerBullet>(right_bullet_pos, right_bullet_rot));
     }
 }
 
@@ -26,4 +34,8 @@ void UserPlayer::setDrawerStrategy(std::unique_ptr<IPlayerDrawingStrategy> drawe
 
 void UserPlayer::setControlStrategy(std::unique_ptr<IPlayerControlStrategy> control_strategy){
     _control_strategy = std::move(control_strategy);
+}
+
+bool UserPlayer::isFire() const{
+    return _input_strategy->get().is_fire;
 }

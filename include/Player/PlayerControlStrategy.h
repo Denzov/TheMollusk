@@ -13,21 +13,21 @@
 class IPlayerControlStrategy {
 public:
     virtual ~IPlayerControlStrategy() = default;
-    virtual void update(EntitySubmission& current, const PlayerInput& input) = 0;
+    virtual void update(EntitySubmission& submission, const PlayerInput& input) = 0;
 };
 
 class DefaultPlayerControlStrategy : public IPlayerControlStrategy {
 public:
-    void update(EntitySubmission& current, const PlayerInput& input) override {
-        const float next_rot = rot_to_mouse(current.pos, input.mouse_pos);
-        const Vector2 next_pos = add(current.pos, shoot_moving(next_rot));
+    void update(EntitySubmission& submission, const PlayerInput& input) override {
+        const float next_rot = rot_to_mouse(submission.pos, input.mouse_pos);
+        const Vector2 next_pos = add(submission.pos, shoot_moving(input, next_rot));
 
-        current.pos = next_pos;
-        current.rot = next_rot;
+        submission.pos = next_pos;
+        submission.rot = next_rot;
     }
 
 private:
-    float rot_to_mouse(const Vector2 base, const Vector2& target) const{
+    float rot_to_mouse(const Vector2& base, const Vector2& target) const{
         const float zoom_scale = 1.f / CaptureParams::getInstance()->getZoomRatio();
         const Vector2 target_position = multiply(target, zoom_scale);
         const Vector2 scaled_screen_centre = {
@@ -42,13 +42,13 @@ private:
         return next_rot;
     }
 
-    Vector2 shoot_moving(const float rot){
-        bool need_shoot = IsKeyDown(KEY_SHOOT);
+    Vector2 shoot_moving(const PlayerInput& input, const float rot){
+        bool need_shoot = input.is_fire;
 
         const float constrained_fps = constrain(GetFPS(), 1, GameAppParams::FPS);
         const float Ts = 1.f / constrained_fps;
 
-        const Vector2 norm_speed = { std::cos(rot), std::sin(rot) };
+        const Vector2 norm_speed = { -std::cos(rot), -std::sin(rot) };
         const Vector2 target_speed = need_shoot?
             multiply(norm_speed, MAX_SPEED * Ts) : Vector2{0, 0};
         const float T = need_shoot?
@@ -62,15 +62,11 @@ private:
     }
 
 private:
-    enum MOVING_KEYS : uint16_t{
-        KEY_SHOOT = KEY_F,
-    };
-
     Vector2 _context_speed = {0, 0};
 
-    static constexpr float ACCEL_TIME = 0.0001f;
-    static constexpr float DECEL_TIME = 0.0001f;
-    static constexpr float MAX_SPEED = 10000.f;
+    static constexpr float ACCEL_TIME = 0.001f;
+    static constexpr float DECEL_TIME = 0.3f;
+    static constexpr float MAX_SPEED = 600.f;
 };
 
 #endif // !_PLAYER_CONTROL_STRATEGY_H_
