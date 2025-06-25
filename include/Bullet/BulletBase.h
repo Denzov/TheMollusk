@@ -10,22 +10,28 @@ class BulletBase : public EntityBase{
 public:
     BulletBase(EntitySubmission submission, float damage, float _speed): 
         _damage(damage), _speed(_speed),
-        ::EntityBase(submission){};
+        ::EntityBase(submission), 
+        speed_vec {
+            std::cos(submission.rot) * _speed,
+            std::sin(submission.rot) * _speed
+        } {};
 
     float getDamage() const {
         return _damage;
     }
 
     void update(EntityManager& manager) override {
-        const Vector2 rot_vec = { std::cos(_submission.rot), std::sin(_submission.rot) };
-        _submission.pos = add(_submission.pos, multiply(rot_vec, _speed));
+        const float constrained_fps = constrain(GetFPS(), 1, GameAppParams::FPS);
+        const float Ts = 1.f / constrained_fps;
+
+        _submission.pos = add(_submission.pos, multiply(speed_vec, Ts));
     }
 
 protected:
-    float _speed;
-    float _damage;
+    const Vector2 speed_vec;
+    
+    const float _speed;
+    const float _damage;
 };
-
-using AbstractBullet_ptr = std::shared_ptr<BulletBase>;
 
 #endif // !_BULLES_BASE_H_

@@ -17,14 +17,7 @@ void UserPlayer::update(EntityManager& manager) {
     _control_strategy->update(_submission, _input_strategy->get());
 
     if(_input_strategy->get().is_fire){
-        const float left_bullet_rot = _submission.rot - half(half(PI));
-        const float right_bullet_rot = _submission.rot + half(half(PI));
-
-        const Vector2 left_bullet_pos  = vec_from_angle(_submission.rot, _submission.radius + BULLET_SPAWN_DELTA, _submission.pos);
-        const Vector2 right_bullet_pos = vec_from_angle(_submission.rot, _submission.radius + BULLET_SPAWN_DELTA, _submission.pos);
-
-        manager.addEntity(std::make_shared<DefaultPlayerBullet>(left_bullet_pos, left_bullet_rot));
-        manager.addEntity(std::make_shared<DefaultPlayerBullet>(right_bullet_pos, right_bullet_rot));
+        BulletMaker::makeRange<DefaultPlayerBullet>(manager, _submission.pos, _submission.rot, 300, 90 * DEG2RAD, THIS_RADIUS + BULLET_SPAWN_DELTA);
     }
 }
 

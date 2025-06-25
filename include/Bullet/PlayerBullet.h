@@ -16,7 +16,7 @@ public:
     using PlayerBulletTemplate<DefaultPlayerBullet>::PlayerBulletTemplate;
 
     void draw() const override {
-        DrawCircleV(_submission.pos, THIS_RADIUS, THIS_COLOR);
+        DrawCircleV(_submission.pos, _submission.radius, THIS_COLOR);
     }
 
     static constexpr float getRadius() { return THIS_RADIUS; }
@@ -26,7 +26,7 @@ public:
 private:
     static constexpr Color THIS_COLOR = YELLOW;
     static constexpr float THIS_RADIUS = 4.f;
-    static constexpr float THIS_SPEED = 0.2f;
+    static constexpr float THIS_SPEED = 300.f;
     static constexpr float THIS_DAMAGE = 1.f;
 };
 

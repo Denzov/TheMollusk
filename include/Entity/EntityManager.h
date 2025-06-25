@@ -24,14 +24,14 @@ public:
             entity->draw();
     }
 
-    void addEntity(std::shared_ptr<IEntity> entity){
-        _entities.push_back(entity);
+    void addEntity(std::unique_ptr<IEntity> entity){
+        _entities.push_back(std::move(entity));
     }
 
-private:
-    std::vector<std::shared_ptr<IEntity>> _entities;
-};
+    uint32_t getEntitiesCount() const{ return _entities.size(); }
 
-using EntityManager_ptr = std::shared_ptr<EntityManager>;
+private:
+    std::vector<std::unique_ptr<IEntity>> _entities;
+};
 
 #endif // !_ENTITY_MANAGER_H_

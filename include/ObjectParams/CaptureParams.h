@@ -61,8 +61,8 @@ private:
 	CaptureParams() {}
 	~CaptureParams() {}	
 
-	int _width = GameAppParams::FIELD_WIDTH;
-	int _height = GameAppParams::FIELD_HEIGHT;
+	int _width = GameAppParams::DEFAULT_SCREEN_WIDTH;
+	int _height = GameAppParams::DEFAULT_SCREEN_HEIGHT;
     float* _zoom_ratio = nullptr;
     Vector2* _offset = nullptr;
 };

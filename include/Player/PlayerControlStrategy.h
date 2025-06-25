@@ -64,9 +64,9 @@ private:
 private:
     Vector2 _context_speed = {0, 0};
 
-    static constexpr float ACCEL_TIME = 0.001f;
+    static constexpr float ACCEL_TIME = 0.01f;
     static constexpr float DECEL_TIME = 0.3f;
-    static constexpr float MAX_SPEED = 600.f;
+    static constexpr float MAX_SPEED = 10.f;
 };
 
 #endif // !_PLAYER_CONTROL_STRATEGY_H_

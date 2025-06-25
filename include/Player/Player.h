@@ -10,6 +10,7 @@
 #include "../Entity/EntityBase.h"
 #include "../Entity/EntityManager.h"
 
+#include "../Bullet/BulletMaker.h"
 #include "../Bullet/PlayerBullet.h"
 
 #include "PlayerDrawingStrategy.h"

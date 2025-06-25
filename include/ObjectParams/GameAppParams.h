@@ -5,7 +5,7 @@
 
 struct GameAppParams {
 	static constexpr const char* TITLE = "The Mollusk";
-	static constexpr int FPS = 600;
+	static constexpr int FPS = 60;
 	static constexpr int FIELD_WIDTH = 800;
 	static constexpr int FIELD_HEIGHT = 800;
 	static constexpr int DEFAULT_SCREEN_WIDTH = FIELD_WIDTH + 100;
