@@ -22,6 +22,7 @@ private:
     using DrawingStrategy_ptr = std::unique_ptr<IPlayerDrawingStrategy>;
     using ControlStrategy_ptr = std::unique_ptr<IPlayerControlStrategy>;
     using InputStrategy_ptr = std::unique_ptr<IPlayerInputStrategy>;
+    
 public:
     UserPlayer(): 
             _drawing_strategy(std::make_unique<DefaultPlayerDrawingStrategy>()),
@@ -54,6 +55,7 @@ public:
     void    setControlStrategy(ControlStrategy_ptr control_strategy);
 
     bool    isFire()                                const;
+    Faction getFaction()                            const override;
 
 private:
     DrawingStrategy_ptr _drawing_strategy;
@@ -62,6 +64,7 @@ private:
 
     static constexpr float THIS_RADIUS = 7.f;
     static constexpr float BULLET_SPAWN_DELTA = 15.f;
+    static constexpr float BULLET_SWAWN_RADIUS = THIS_RADIUS + BULLET_SPAWN_DELTA;
 };
 
 #endif // !_PLAYER_H_

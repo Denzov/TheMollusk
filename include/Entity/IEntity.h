@@ -6,6 +6,20 @@
 
 class EntityManager;
 
+enum class Faction : size_t {
+    Player,
+    Enemy,
+    Bullet,
+
+    SIZE
+};
+
+inline constexpr int to_int(Faction f) { return static_cast<int>(f); }
+
+constexpr size_t get_faction_size(){
+    return static_cast<size_t>(Faction::SIZE);
+}
+
 class IEntity
 {
 public:
@@ -24,6 +38,10 @@ public:
 
     virtual bool isInField() const = 0;
     virtual bool isCollide(const IEntity& other) const = 0;
+    virtual Faction getFaction() const = 0;
+    virtual int  getFactionInt() const = 0;
 };
+
+using IEntityPtr = std::shared_ptr<IEntity>;
 
 #endif // !_I_ENTITY_H_

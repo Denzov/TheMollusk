@@ -10,6 +10,7 @@
 
 #include "Entity/EntityManager.h"
 #include "Player/Player.h"
+#include "Enemy/Enemy.h"
 #include "Bullet/PlayerBullet.h"
 
 class GameApp : public GameAppParams {

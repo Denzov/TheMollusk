@@ -49,10 +49,13 @@ private:
         const float Ts = 1.f / constrained_fps;
 
         const Vector2 norm_speed = { -std::cos(rot), -std::sin(rot) };
+
         const Vector2 target_speed = need_shoot?
-            multiply(norm_speed, MAX_SPEED * Ts) : Vector2{0, 0};
+            multiply(norm_speed, MAX_SPEED) : ZERO_SPEED;
+
         const float T = need_shoot?
             ACCEL_TIME : DECEL_TIME;
+
         const float lerp_t = 1.f - std::exp(-Ts / T);
 
         _context_speed.x = lerp(_context_speed.x, target_speed.x, lerp_t);
@@ -64,9 +67,10 @@ private:
 private:
     Vector2 _context_speed = {0, 0};
 
-    static constexpr float ACCEL_TIME = 0.01f;
-    static constexpr float DECEL_TIME = 0.3f;
-    static constexpr float MAX_SPEED = 10.f;
+    static constexpr Vector2 ZERO_SPEED = {0, 0};
+    static constexpr float ACCEL_TIME = 0.2f;
+    static constexpr float DECEL_TIME = 0.8f;
+    static constexpr float MAX_SPEED = 30.f;
 };
 
 #endif // !_PLAYER_CONTROL_STRATEGY_H_

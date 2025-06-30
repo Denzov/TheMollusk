@@ -17,6 +17,7 @@ public:
 
     void draw() const override {
         DrawCircleV(_submission.pos, _submission.radius, THIS_COLOR);
+        DrawCircleV(_submission.pos, _submission.radius - 1.f, BLACK);
     }
 
     static constexpr float getRadius() { return THIS_RADIUS; }
@@ -26,7 +27,28 @@ public:
 private:
     static constexpr Color THIS_COLOR = YELLOW;
     static constexpr float THIS_RADIUS = 4.f;
-    static constexpr float THIS_SPEED = 300.f;
+    static constexpr float THIS_SPEED = 100.f;
+    static constexpr float THIS_DAMAGE = 1.f;
+};
+
+class FastPlayerBullet : public PlayerBulletTemplate<FastPlayerBullet>
+{
+public:
+    using PlayerBulletTemplate<FastPlayerBullet>::PlayerBulletTemplate;
+
+    void draw() const override {
+        DrawCircleV(_submission.pos, _submission.radius, THIS_COLOR);
+        DrawCircleV(_submission.pos, _submission.radius * 0.8f, WHITE);
+    }
+
+    static constexpr float getRadius() { return THIS_RADIUS; }
+    static constexpr float getSpeed()  { return THIS_SPEED; }
+    static constexpr float getDamage() { return THIS_DAMAGE; }
+
+private:
+    static constexpr Color THIS_COLOR = RED;
+    static constexpr float THIS_RADIUS = 6.f;
+    static constexpr float THIS_SPEED = 600.f;
     static constexpr float THIS_DAMAGE = 1.f;
 };
 

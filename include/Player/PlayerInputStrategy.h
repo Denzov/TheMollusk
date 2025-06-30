@@ -20,27 +20,30 @@ public:
 class DefaultPlayerInputStrategy : public IPlayerInputStrategy{
 public:
     void handle() override{
-        _mouse_pos = GetMousePosition();
-        if(GetTime() - last_time < SHOOT_COOLDOWN) _is_fire = false;
+        _input.mouse_pos = GetMousePosition();
+        if(GetTime() - _last_cooldown_time < _shoot_cooldown) _input.is_fire = false;
         else{
-            _is_fire = IsKeyDown(MOVING_KEYS::KEY_SHOOT);
+            _input.is_fire = IsKeyDown(MOVING_KEYS::KEY_SHOOT);
             
-            if(_is_fire)
-                last_time = GetTime();
+            if(_input.is_fire) _last_cooldown_time = GetTime();
         }
     }
 
-    PlayerInput get() const override{ return { _mouse_pos, _is_fire }; }
+    PlayerInput get() const override{ return _input; }
+    void setCooldown(float cooldown) { _shoot_cooldown = cooldown; }
 
 private:
     enum MOVING_KEYS : uint16_t{
         KEY_SHOOT = KEY_F,
     };
-    static constexpr float SHOOT_COOLDOWN = 0.01f;
+    
+    static constexpr float DEFAULT_COOLDOWN = 0.32f;
 
-    float last_time = 0;
-    Vector2 _mouse_pos = { 0, 0 };
-    bool _is_fire = false;
+    float _shoot_cooldown = DEFAULT_COOLDOWN;
+
+    float _last_cooldown_time = 0;
+
+    PlayerInput _input = { {0, 0}, false };
 };
 
 class NullPlayerInputStrategy : public IPlayerInputStrategy{

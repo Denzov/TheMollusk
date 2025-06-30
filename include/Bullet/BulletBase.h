@@ -20,11 +20,15 @@ public:
         return _damage;
     }
 
-    void update(EntityManager& manager) override {
+    virtual void update(EntityManager& manager) override {
         const float constrained_fps = constrain(GetFPS(), 1, GameAppParams::FPS);
         const float Ts = 1.f / constrained_fps;
 
         _submission.pos = add(_submission.pos, multiply(speed_vec, Ts));
+    }
+
+    Faction getFaction() const override{
+        return Faction::Bullet;
     }
 
 protected:

@@ -29,7 +29,7 @@ public:
         );
     }
 
-    virtual bool isInField() const override{ 
+    bool isInField() const override{ 
         const bool is_in_x = -GameAppParams::FIELD_WIDTH/2 < _submission.pos.x + _submission.radius &&
                              _submission.pos.x - _submission.radius < GameAppParams::FIELD_WIDTH/2;
         const bool is_in_y = -GameAppParams::FIELD_HEIGHT/2 < _submission.pos.y + _submission.radius &&
@@ -37,11 +37,15 @@ public:
         return is_in_x && is_in_y;
     }
 
+    int getFactionInt() const override{ 
+        return static_cast<int>(getFaction()); 
+    }
+
 protected:
     static constexpr Vector2 DEFAULT_POSITION = { 0, 0 };
     static constexpr float DEFAULT_ROTATION = 0;
+    
     bool _is_alive = true;
-
     EntitySubmission _submission = {};
 };
 

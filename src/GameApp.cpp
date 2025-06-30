@@ -34,15 +34,17 @@ void GameApp::compute()
                                     GameAppParams::DEFAULT_SCREEN_WIDTH,
                                     GameAppParams::DEFAULT_SCREEN_HEIGHT);
     }
-    else if(IsKeyPressed(KEY_G)){
-        CaptureParams::getInstance()->set(500, 500);
+    else if(IsKeyDown(KEY_D)){
+        for(uint16_t i = 0; i < 10; i++){
+            const Vector2 vec = {(float)GetRandomValue(0, GameAppParams::FIELD_WIDTH ) - GameAppParams::FIELD_WIDTH/2, 
+                             (float)GetRandomValue(0, GameAppParams::FIELD_HEIGHT) - GameAppParams::FIELD_HEIGHT/2};
+            _entities.addEntity(std::make_unique<Enemy1>(vec, 0.0f));   
+        }
     }
     
     if(IsKeyPressed(KEY_A)){
         std::cout << GetFPS() << '\t' << _entities.getEntitiesCount() << '\n';
     }
-
-
 }
 
 void GameApp::draw()

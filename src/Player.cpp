@@ -17,7 +17,7 @@ void UserPlayer::update(EntityManager& manager) {
     _control_strategy->update(_submission, _input_strategy->get());
 
     if(_input_strategy->get().is_fire){
-        BulletMaker::makeRange<DefaultPlayerBullet>(manager, _submission.pos, _submission.rot, 300, 90 * DEG2RAD, THIS_RADIUS + BULLET_SPAWN_DELTA);
+        BulletMaker::rangeProcess<FastPlayerBullet>(manager, _submission.pos, _submission.rot, 90, 360 * DEG2RAD, BULLET_SWAWN_RADIUS);
     }
 }
 
@@ -31,4 +31,8 @@ void UserPlayer::setControlStrategy(std::unique_ptr<IPlayerControlStrategy> cont
 
 bool UserPlayer::isFire() const{
     return _input_strategy->get().is_fire;
+}
+
+Faction UserPlayer::getFaction() const{ 
+    return Faction::Player; 
 }

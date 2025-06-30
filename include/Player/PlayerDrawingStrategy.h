@@ -23,6 +23,7 @@ public:
 private:
     void draw_main_body(const EntitySubmission& current) const{
         DrawCircleV(current.pos, current.radius, circle_color);
+        DrawCircleV(current.pos, current.radius - 1.f, GRAY);
     }
 
     void draw_direction_arrow(const EntitySubmission& current, const float bullet_spawn_radius) const{
@@ -48,6 +49,15 @@ private:
 
         DrawLineBezierCubic(left_side_point, right_side_point, left_fwd_point, right_fwd_point, line_thick, line_color);
         DrawLineBezierCubic(left_fwd_point, right_fwd_point, left_direction_point, right_direction_point, line_thick, line_color);
+    }
+
+    void draw_op_direction_arrow(const EntitySubmission& current, const float bullet_spawn_radius) const{
+        const float   op_angle                 = current.rot + PI;
+        const Vector2 op_right_side_point      = vec_from_angle(op_angle + side_points_angle, current.radius + side_points_delta, current.pos);
+        const Vector2 op_left_side_point       = vec_from_angle(op_angle - side_points_angle, current.radius + side_points_delta, current.pos);
+        const Vector2 centre_point             = vec_from_angle(op_angle, current.radius, current.pos);
+
+        DrawLineBezierCubic(op_right_side_point, op_left_side_point, centre_point, centre_point, line_thick, line_color);
     }
 
     static constexpr Color circle_color = { 166, 173, 186, 255 };
