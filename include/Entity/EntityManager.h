@@ -41,7 +41,7 @@ public:
 
             for(auto& enemy : enemy_entities){
                 if(bullet_entities[i]->isCollide(*enemy)){
-                    bullet_entities[i]->destroy();
+                    // bullet_entities[i]->destroy();
                     enemy->destroy();
                 }
             } ++i;

@@ -35,7 +35,8 @@ public:
 private:
     static constexpr float THIS_RADIUS = 10.f;
     static constexpr Color THIS_COLOR = RED;
-
+    
+    inline static Texture2D texture;
 };
 
 #endif // !_ENEMY_H_

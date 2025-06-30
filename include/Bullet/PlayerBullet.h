@@ -38,7 +38,7 @@ public:
 
     void draw() const override {
         DrawCircleV(_submission.pos, _submission.radius, THIS_COLOR);
-        DrawCircleV(_submission.pos, _submission.radius * 0.8f, WHITE);
+        DrawCircleV(_submission.pos, _submission.radius * 0.7f, WHITE);
     }
 
     static constexpr float getRadius() { return THIS_RADIUS; }

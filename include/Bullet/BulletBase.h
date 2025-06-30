@@ -33,7 +33,6 @@ public:
 
 protected:
     const Vector2 speed_vec;
-    
     const float _speed;
     const float _damage;
 };
