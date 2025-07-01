@@ -4,6 +4,8 @@
 #include <raylib.h>
 
 #include "../Utililties.h"
+#include "../TimeManager.h"
+
 #include "../ObjectParams/GameAppParams.h"
 #include "../ObjectParams/EntitySubmission.h"
 #include "../ObjectParams/CaptureParams.h"
@@ -43,10 +45,9 @@ private:
     }
 
     Vector2 shoot_moving(const PlayerInput& input, const float rot){
-        bool need_shoot = input.is_fire;
-
-        const float constrained_fps = constrain(GetFPS(), 1, GameAppParams::FPS);
-        const float Ts = 1.f / constrained_fps;
+        const bool need_shoot = input.is_fire;
+        
+        const float Ts = TimeManager::getInstance()->getScaledDeltaTime();
 
         const Vector2 norm_speed = { -std::cos(rot), -std::sin(rot) };
 
@@ -61,7 +62,7 @@ private:
         _context_speed.x = lerp(_context_speed.x, target_speed.x, lerp_t);
         _context_speed.y = lerp(_context_speed.y, target_speed.y, lerp_t);
 
-        return _context_speed;
+        return multiply(_context_speed, Ts);
     }
 
 private:
@@ -70,7 +71,7 @@ private:
     static constexpr Vector2 ZERO_SPEED = {0, 0};
     static constexpr float ACCEL_TIME = 0.2f;
     static constexpr float DECEL_TIME = 0.8f;
-    static constexpr float MAX_SPEED = 30.f;
+    static constexpr float MAX_SPEED = 300.f;
 };
 
 #endif // !_PLAYER_CONTROL_STRATEGY_H_

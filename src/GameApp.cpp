@@ -27,14 +27,20 @@ void GameApp::compute()
     _camera.update();
     _entities.update();
 
-    if(IsKeyPressed(KEY_Q)){
+    volatile int fps = GetFPS();
+
+    if(IsKeyDown(KEY_S)){
+        TimeManager::getInstance()->mulTimeScale(0.9f);
+        std::cout << TimeManager::getInstance()->getTimeScale() << '\n';
     }
-    else if(IsKeyDown(KEY_R)){
-        CaptureParams::getInstance()->set(   
-                                    GameAppParams::DEFAULT_SCREEN_WIDTH,
-                                    GameAppParams::DEFAULT_SCREEN_HEIGHT);
+    if(IsKeyDown(KEY_D)){
+        TimeManager::getInstance()->setTimeScale(0.2f);
     }
-    else if(IsKeyDown(KEY_D)){
+    if(IsKeyDown(KEY_G)){
+        TimeManager::getInstance()->resetTimeScale();
+    }
+
+    if(IsKeyDown(KEY_SPACE)){
         for(uint16_t i = 0; i < 10; i++){
             const Vector2 vec = {(float)GetRandomValue(0, GameAppParams::FIELD_WIDTH ) - GameAppParams::FIELD_WIDTH/2, 
                              (float)GetRandomValue(0, GameAppParams::FIELD_HEIGHT) - GameAppParams::FIELD_HEIGHT/2};
@@ -43,7 +49,7 @@ void GameApp::compute()
     }
     
     if(IsKeyPressed(KEY_A)){
-        std::cout << GetFPS() << '\t' << _entities.getEntitiesCount() << '\n';
+        std::cout << GetFPS() << '\t' << _entities.getEntitiesCount() << '\t' << _entities.getDestroyedEntitiesCount() << '\n';
     }
 }
 

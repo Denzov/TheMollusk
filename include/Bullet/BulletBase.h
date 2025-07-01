@@ -4,6 +4,7 @@
 #include <raylib.h>
 #include <memory>
 
+#include "../TimeManager.h"
 #include "../Entity/EntityBase.h"
 
 class BulletBase : public EntityBase{
@@ -21,8 +22,7 @@ public:
     }
 
     virtual void update(EntityManager& manager) override {
-        const float constrained_fps = constrain(GetFPS(), 1, GameAppParams::FPS);
-        const float Ts = 1.f / constrained_fps;
+        const float Ts = TimeManager::getInstance()->getScaledDeltaTime();
 
         _submission.pos = add(_submission.pos, multiply(speed_vec, Ts));
     }

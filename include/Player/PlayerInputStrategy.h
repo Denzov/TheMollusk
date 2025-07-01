@@ -37,7 +37,7 @@ private:
         KEY_SHOOT = KEY_F,
     };
     
-    static constexpr float DEFAULT_COOLDOWN = 0.32f;
+    static constexpr float DEFAULT_COOLDOWN = 0.05f;
 
     float _shoot_cooldown = DEFAULT_COOLDOWN;
 

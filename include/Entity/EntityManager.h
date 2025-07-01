@@ -3,17 +3,23 @@
 
 #include <memory>
 #include <vector>
+#include <list>
 #include <array>
 
 #include "IEntity.h"
 
 class EntityManager{
+private:
+    using IEntityVector = std::vector<IEntityPtr>;
+    using IEntityList = std::list<IEntityPtr>;
+
 public:
     void update(){
         auto& player_entities = _entities[to_int(Faction::Player)];
         for(size_t i = 0; i < player_entities.size();){
             if(!player_entities[i]->isAlive() || !player_entities[i]->isInField()){
-                player_entities.erase(player_entities.begin() + i);
+                _destroyed_entities.push_back(std::move(player_entities[i]));
+                erase_fast(player_entities, i);
                 continue;
             }
 
@@ -23,7 +29,8 @@ public:
         auto& enemy_entities = _entities[to_int(Faction::Enemy)];
         for(size_t i = 0; i < enemy_entities.size();){
             if(!enemy_entities[i]->isAlive() || !enemy_entities[i]->isInField()){
-                enemy_entities.erase(enemy_entities.begin() + i);
+                _destroyed_entities.push_back(std::move(enemy_entities[i]));
+                erase_fast(enemy_entities, i);
                 continue;
             }
 
@@ -33,7 +40,8 @@ public:
         auto& bullet_entities = _entities[to_int(Faction::Bullet)];
         for(size_t i = 0; i < bullet_entities.size();){
             if(!bullet_entities[i]->isAlive() || !bullet_entities[i]->isInField()){
-                bullet_entities.erase(bullet_entities.begin() + i);
+                _destroyed_entities.push_back(std::move(bullet_entities[i]));
+                erase_fast(bullet_entities, i);
                 continue;
             }
 
@@ -45,6 +53,11 @@ public:
                     enemy->destroy();
                 }
             } ++i;
+        }
+
+        for(uint32_t i = 0; i < MAX_DESTROYED_ENTITIES_PER_TICK; i++){
+            if(_destroyed_entities.empty()) break;
+            _destroyed_entities.pop_back();
         }
     }
 
@@ -58,8 +71,6 @@ public:
 
     void addEntity(std::unique_ptr<IEntity> entity){
         _entities[entity->getFactionInt()].push_back(std::move(entity));
-        for(int i = 0; i < get_faction_size(); i++){
-        }
     }
 
     uint32_t getEntitiesCount() const{ 
@@ -71,9 +82,23 @@ public:
         return count; 
     }
 
+    uint32_t getDestroyedEntitiesCount() const{
+        return _destroyed_entities.size();
+    }
+
 private:
-    using IEntityVector = std::vector<IEntityPtr>;
+    void erase_fast(IEntityVector& vec, size_t i) {
+        if (i < vec.size()) {
+            vec[i] = std::move(vec.back());
+            vec.pop_back();
+        }
+    }
+
+private:
     std::array<IEntityVector, get_faction_size()> _entities;
+    IEntityList _destroyed_entities;
+
+    static constexpr uint32_t MAX_DESTROYED_ENTITIES_PER_TICK = 50;
 };
 
 #endif // !_ENTITY_MANAGER_H_

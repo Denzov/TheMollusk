@@ -7,9 +7,9 @@
 class EntityManager;
 
 enum class Faction : size_t {
-    Player,
     Enemy,
     Bullet,
+    Player,
 
     SIZE
 };
