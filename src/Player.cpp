@@ -17,7 +17,7 @@ void UserPlayer::update(EntityManager& manager) {
     _control_strategy->update(_submission, _input_strategy->get());
 
     if(_input_strategy->get().is_fire){
-        BulletMaker::rangeProcess<DefaultPlayerBullet>(manager, _submission.pos, _submission.rot, 360, 360 * DEG2RAD, BULLET_SWAWN_RADIUS);
+        BulletMaker::rangeProcess<DefaultPlayerBullet>(manager, _submission.pos, _submission.rot, 180, 60 * DEG2RAD, BULLET_SWAWN_RADIUS);
     }
 }
 

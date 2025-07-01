@@ -8,6 +8,7 @@ struct PlayerInput
 {
     Vector2 mouse_pos;
     bool is_fire;
+    bool is_slowmotion;
 };
 
 class IPlayerInputStrategy{
@@ -21,6 +22,8 @@ class DefaultPlayerInputStrategy : public IPlayerInputStrategy{
 public:
     void handle() override{
         _input.mouse_pos = GetMousePosition();
+        _input.is_slowmotion = IsKeyDown(MOVING_KEYS::KEY_SLOWMOTION);
+        
         if(GetTime() - _last_cooldown_time < _shoot_cooldown) _input.is_fire = false;
         else{
             _input.is_fire = IsKeyDown(MOVING_KEYS::KEY_SHOOT);
@@ -35,9 +38,10 @@ public:
 private:
     enum MOVING_KEYS : uint16_t{
         KEY_SHOOT = KEY_F,
+        KEY_SLOWMOTION = KEY_D,
     };
     
-    static constexpr float DEFAULT_COOLDOWN = 0.05f;
+    static constexpr float DEFAULT_COOLDOWN = 0.32f;
 
     float _shoot_cooldown = DEFAULT_COOLDOWN;
 

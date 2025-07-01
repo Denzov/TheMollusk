@@ -33,9 +33,6 @@ void GameApp::compute()
         TimeManager::getInstance()->mulTimeScale(0.9f);
         std::cout << TimeManager::getInstance()->getTimeScale() << '\n';
     }
-    if(IsKeyDown(KEY_D)){
-        TimeManager::getInstance()->setTimeScale(0.2f);
-    }
     if(IsKeyDown(KEY_G)){
         TimeManager::getInstance()->resetTimeScale();
     }

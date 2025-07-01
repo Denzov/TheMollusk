@@ -21,6 +21,8 @@ public:
 class DefaultPlayerControlStrategy : public IPlayerControlStrategy {
 public:
     void update(EntitySubmission& submission, const PlayerInput& input) override {
+        slowmotion_control(input);
+
         const float next_rot = rot_to_mouse(submission.pos, input.mouse_pos);
         const Vector2 next_pos = add(submission.pos, shoot_moving(input, next_rot));
 
@@ -65,13 +67,26 @@ private:
         return multiply(_context_speed, Ts);
     }
 
+    void slowmotion_control(const PlayerInput& input) {
+        if(input.is_slowmotion){
+            TimeManager::getInstance()->setTimeScaleByLerp(SLOWMOTION_TARGET, SMOOTHING_SLOWMOTION);
+        }
+        else{
+            TimeManager::getInstance()->setTimeScaleByLerp(SLOWMOTION_DEFAULT, SMOOTHING_SLOWMOTION);
+        }
+    }
+
 private:
     Vector2 _context_speed = {0, 0};
 
     static constexpr Vector2 ZERO_SPEED = {0, 0};
     static constexpr float ACCEL_TIME = 0.2f;
-    static constexpr float DECEL_TIME = 0.8f;
-    static constexpr float MAX_SPEED = 300.f;
+    static constexpr float DECEL_TIME = 0.6f;
+    static constexpr float MAX_SPEED = 3000.f;
+
+    static constexpr float SLOWMOTION_TARGET = 0.1f;
+    static constexpr float SLOWMOTION_DEFAULT = 1.f;
+    static constexpr float SMOOTHING_SLOWMOTION = 0.05f;
 };
 
 #endif // !_PLAYER_CONTROL_STRATEGY_H_

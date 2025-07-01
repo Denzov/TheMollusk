@@ -17,33 +17,21 @@ public:
     void update(){
         auto& player_entities = _entities[to_int(Faction::Player)];
         for(size_t i = 0; i < player_entities.size();){
-            if(!player_entities[i]->isAlive() || !player_entities[i]->isInField()){
-                _destroyed_entities.push_back(std::move(player_entities[i]));
-                erase_fast(player_entities, i);
-                continue;
-            }
+            if(try_erase_entity(player_entities, i)) continue;
 
             player_entities[i++]->update(*this);
         }
 
         auto& enemy_entities = _entities[to_int(Faction::Enemy)];
         for(size_t i = 0; i < enemy_entities.size();){
-            if(!enemy_entities[i]->isAlive() || !enemy_entities[i]->isInField()){
-                _destroyed_entities.push_back(std::move(enemy_entities[i]));
-                erase_fast(enemy_entities, i);
-                continue;
-            }
+            if(try_erase_entity(enemy_entities, i)) continue;
 
             enemy_entities[i++]->update(*this);
         }
 
         auto& bullet_entities = _entities[to_int(Faction::Bullet)];
         for(size_t i = 0; i < bullet_entities.size();){
-            if(!bullet_entities[i]->isAlive() || !bullet_entities[i]->isInField()){
-                _destroyed_entities.push_back(std::move(bullet_entities[i]));
-                erase_fast(bullet_entities, i);
-                continue;
-            }
+            if(try_erase_entity(bullet_entities, i)) continue;
 
             bullet_entities[i]->update(*this);
 
@@ -94,11 +82,20 @@ private:
         }
     }
 
+    bool try_erase_entity(IEntityVector& vec, size_t i){
+        if(!vec[i]->isAlive() || !vec[i]->isInField()){
+                _destroyed_entities.push_back(std::move(vec[i]));
+                erase_fast(vec, i);
+                return true;
+        }
+        return false;
+    }
+
 private:
     std::array<IEntityVector, get_faction_size()> _entities;
     IEntityList _destroyed_entities;
 
-    static constexpr uint32_t MAX_DESTROYED_ENTITIES_PER_TICK = 50;
+    static constexpr uint32_t MAX_DESTROYED_ENTITIES_PER_TICK = 100;
 };
 
 #endif // !_ENTITY_MANAGER_H_

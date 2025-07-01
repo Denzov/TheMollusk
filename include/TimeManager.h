@@ -3,6 +3,8 @@
 
 #include <raylib.h>
 
+#include "Utililties.h"
+
 class TimeManager{
 public:
     static TimeManager* getInstance() {
@@ -14,6 +16,10 @@ public:
     float getDeltaTime() const { return GetFrameTime(); }
     float getTimeScale() const { return _time_scale; }
     
+    void setTimeScaleByLerp(float target, float lerp_t) {
+        _time_scale = lerp(_time_scale, target, lerp_t); 
+    }
+
     void setTimeScale(float scale) { _time_scale = scale; }
     void resetTimeScale() { _time_scale = 1.0f; }
     void addTimeScale(float scale) { _time_scale += scale; }

@@ -16,7 +16,7 @@ public:
 private:
     static constexpr Color THIS_COLOR = YELLOW;
     static constexpr float THIS_RADIUS = 4.f;
-    static constexpr float THIS_SPEED = 100.f;
+    static constexpr float THIS_SPEED = 600.f;
     static constexpr float THIS_DAMAGE = 1.f;
 };
 
